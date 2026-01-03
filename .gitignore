@@ -5,6 +5,10 @@ __pycache__/
 .firebase_key.json
 firebase_key.json/
 firebase/firebase_key.json
+
+firebase/firebase_key.json
+firebase/*.json
+
 # C extensions
 *.so
 
