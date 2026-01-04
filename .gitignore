@@ -9,6 +9,8 @@ firebase/firebase_key.json
 firebase/firebase_key.json
 firebase/*.json
 
+firebase/firebase_key.json
+
 # C extensions
 *.so
 
