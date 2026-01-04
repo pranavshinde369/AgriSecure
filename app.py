@@ -153,3 +153,5 @@ st.caption(
     "AgriSecure does not guarantee 100% accuracy."
 )
 st.caption("Developed by ViperVision")
+
+
