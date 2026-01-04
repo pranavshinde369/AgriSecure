@@ -1,8 +1,11 @@
 import streamlit as st
 import joblib
 
+
 from utils.url_predict import predict_url
 
+from utils.firebase_db import log_result
+from utils.firebase_db import log_result, get_impact_stats
 
 # Load TEXT model
 
@@ -62,20 +65,50 @@ language = st.selectbox("🌐 Language / भाषा", ["English", "Hindi"])
 t = TEXT[language]
 
 st.title(t["title"])
+st.info(
+    "🌾 **AgriSecure helps farmers identify scam messages and fake websites "
+    "related to subsidies, loans, and government schemes in English & Hindi.**"
+)
+
 st.write(t["subtitle"])
+st.markdown("---")
+st.subheader("📊 Impact Dashboard")
+
+stats = get_impact_stats()
+
+col1, col2, col3 = st.columns(3)
+
+col1.metric("Total Checks", stats["total_checks"])
+col2.metric("Scams Detected", stats["scams_detected"])
+col3.metric("Frauds Prevented", stats["scams_detected"])
+
+st.caption(
+    f"Text Checks: {stats['text_checks']} | URL Checks: {stats['url_checks']}"
+)
+st.markdown("---")
 
 mode = st.radio(t["mode"], [t["msg"], t["url"]])
 
 # MESSAGE CHECK
 
 if mode == t["msg"]:
-    message = st.text_area(t["msg"])
+    message = st.text_area(
+    t["msg"],
+    placeholder="Example: Your PM-Kisan subsidy is pending. Verify now..."
+)
+
 
     if st.button(t["btn"]):
         if message.strip() == "":
             st.warning("Please enter a message")
         else:
             label, prob, risk = predict_message(message)
+            log_result(
+                check_type="text",
+                input_value=message,
+                result=label,
+                confidence=prob
+            )
 
             if label == "scam":
                 st.error(t["scam"])
@@ -89,13 +122,23 @@ if mode == t["msg"]:
 # URL CHECK
 
 if mode == t["url"]:
-    url = st.text_input(t["url"])
+    url = st.text_input(
+    t["url"],
+    placeholder="Example: http://verify-account-now.com/login"
+)
+
 
     if st.button(t["btn"]):
         if url.strip() == "":
             st.warning("Please enter a URL")
         else:
             result, prob = predict_url(url)
+            log_result(
+                check_type="url",
+                input_value=url,
+                result=result,
+                confidence=prob
+            )
 
             if "Phishing" in result:
                 st.error(t["scam"])
@@ -103,3 +146,10 @@ if mode == t["url"]:
                 st.success(t["safe"])
 
             st.write(f"**{t['confidence']}:** {prob}")
+
+st.markdown("---")
+st.caption(
+    "⚠️ Educational demo for awareness. "
+    "AgriSecure does not guarantee 100% accuracy."
+)
+st.caption("Developed by ViperVision")

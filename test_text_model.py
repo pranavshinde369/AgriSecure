@@ -15,8 +15,8 @@ def predict_message(message):
 
 # ===== TEST MESSAGES =====
 messages = [
-    "You get intresdt free loan click to claim immediate ",
-    "You have free gift of fertelizerz claim now ",
+    "You get interest free loan click to claim immediate ",
+    "You have free gift of fertilizer claim now ",
     "Urgent! Your bank account will be blocked. Verify immediately"
 ]
 
