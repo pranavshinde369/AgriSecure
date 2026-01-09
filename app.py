@@ -202,7 +202,11 @@ with tab1:
                 label, prob, risk = predict_message(message)
                 log_result("text", message, label, prob)
 
-                st.error(t["scam"]) if label == "scam" else st.success(t["safe"])
+                if label == "scam":
+                    st.error(t["scam"])
+                else:
+                    st.success(t["safe"])
+
                 st.write(f"**{t['risk']}:** {risk.upper()}")
                 st.write(f"**{t['confidence']}:** {prob}")
 
@@ -217,7 +221,11 @@ with tab1:
                 result, prob = predict_url(url)
                 log_result("url", url, result, prob)
 
-                st.error(t["scam"]) if "phishing" in result.lower() else st.success(t["safe"])
+                if "phishing" in result.lower():
+                    st.error(t["scam"])
+                else:
+                    st.success(t["safe"])
+
                 st.write(f"**{t['confidence']}:** {prob}")
 
     # SCREENSHOT CHECK
