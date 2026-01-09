@@ -230,6 +230,13 @@ with tab1:
         if uploaded_file:
             extracted_text = extract_text_from_image(uploaded_file)
 
+            if extracted_text == "":
+                st.warning(
+                    "📸 Screenshot analysis is available in local deployment. "
+                    "Cloud demo shows feature preview only."
+                )
+
+
             st.text_area("📄 Extracted Text (OCR)", extracted_text, height=150)
 
             if st.button(t["analyze"]):
