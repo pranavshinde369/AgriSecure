@@ -4,3 +4,6 @@ joblib
 pandas
 numpy
 firebase-admin
+pillow
+pytesseract
+opencv-python
